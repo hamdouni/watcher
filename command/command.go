@@ -4,8 +4,10 @@
 package command
 
 import (
+	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 )
 
 var cmd *exec.Cmd
@@ -13,17 +15,23 @@ var cmd *exec.Cmd
 // Launch invoke the go compiler to build the program in the tmp folder and launch it.
 func Launch() error {
 
-	// we build the program in the tmp folder
-	c := exec.Command("go", "build", "-o", "/tmp/out.bin", ".")
+	// we build the program in a temp dir
+	dir, err := ioutil.TempDir("", "watcherdir")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(dir)
+	tmpbin := filepath.Join(dir, "out.bin")
+	c := exec.Command("go", "build", "-o", tmpbin, ".")
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr
-	err := c.Run()
+	err = c.Run()
 	if err != nil {
 		return err
 	}
 
 	// now we launch the program
-	cmd = exec.Command("/tmp/out.bin")
+	cmd = exec.Command(tmpbin)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Start()
