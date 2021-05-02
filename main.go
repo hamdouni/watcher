@@ -5,15 +5,21 @@
 package main
 
 import (
+	_ "embed"
 	"log"
 	"watcher/command"
 	"watcher/ignore"
 	"watcher/monitor"
 )
 
+//go:embed VERSION
+var version string
+
 func main() {
 
 	var err error
+
+	log.Printf("Watcher version %v", version)
 
 	// Use .gitignore if it exists or use an empty pattern
 	err = ignore.InitFromFile(".gitignore")
