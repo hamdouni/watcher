@@ -26,22 +26,24 @@ func Init(pattern []string) {
 	ignoreObject = gitignore.CompileIgnoreLines(pattern...)
 }
 
-// InitFromFile read a gitignore file and intialize the ignore pattern
-func InitFromFile(path string) error {
-	file, err := os.Open(path)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
+// InitFromFile read one or more gitignore files and intialize the ignore pattern
+func InitFromFile(paths ...string) error {
 	var pattern []string
-	for scanner.Scan() {
-		pattern = append(pattern, scanner.Text())
-	}
+	for _, path := range paths {
+		file, err := os.Open(path)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
 
-	if err := scanner.Err(); err != nil {
-		return err
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			pattern = append(pattern, scanner.Text())
+		}
+
+		if err := scanner.Err(); err != nil {
+			return err
+		}
 	}
 
 	Init(pattern)

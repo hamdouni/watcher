@@ -22,7 +22,7 @@ func main() {
 	log.Printf("Watcher version %v", version)
 
 	// Use .gitignore if it exists or use an empty pattern
-	err = ignore.InitFromFile(".gitignore")
+	err = ignore.InitFromFile(".gitignore", ".watcherignore")
 	if err != nil {
 		ignore.Init([]string{""})
 	}
