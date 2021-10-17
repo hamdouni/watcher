@@ -6,8 +6,8 @@ package main
 
 import (
 	_ "embed"
+	"flag"
 	"log"
-	"os"
 	"watcher/command"
 	"watcher/ignore"
 	"watcher/monitor"
@@ -20,16 +20,11 @@ func main() {
 
 	var err error
 
-	log.Printf("Watcher version %v", version)
-	if len(os.Args) > 2 {
-		log.Fatalf("watcher accepts one argument, the source path, but %v arguments provided", len(os.Args)-1)
-	}
+	var srcpath = flag.String("d", ".", "the folder to watch")
+	var program = flag.String("r", "", "the program to run")
+	flag.Parse()
 
-	// if a source path is passed as argument, use it instead the default one
-	srcpath := "."
-	if len(os.Args) == 2 {
-		srcpath = os.Args[1]
-	}
+	log.Printf("Watcher version %v", version)
 
 	// Use .gitignore if it exists or use an empty pattern
 	err = ignore.InitFromFile(".gitignore", ".watcherignore")
@@ -37,13 +32,13 @@ func main() {
 		ignore.Init([]string{""})
 	}
 
-	ch, err := monitor.Watch(srcpath)
+	ch, err := monitor.Watch(*srcpath)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer monitor.Stop(ch)
 
-	err = command.Launch(srcpath)
+	err = command.Launch(*program)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,7 +51,7 @@ func main() {
 			if err != nil {
 				log.Printf("%v\n", err)
 			}
-			err = command.Launch(srcpath)
+			err = command.Launch(*program)
 			if err != nil {
 				log.Printf("%v\n", err)
 			}
