@@ -20,11 +20,18 @@ func main() {
 
 	var err error
 
-	var srcpath = flag.String("d", ".", "the folder to watch")
-	var program = flag.String("r", "", "the program to run")
+	var srcpath = flag.String("dir", ".", "Directory to watch")
+	var program = flag.String("run", "", "Program to run")
+	var help = flag.Bool("help", false, "Command line usage")
+
 	flag.Parse()
 
 	log.Printf("Watcher version %v", version)
+
+	if *help {
+		flag.Usage()
+		return
+	}
 
 	// Use .gitignore if it exists or use an empty pattern
 	err = ignore.InitFromFile(".gitignore", ".watcherignore")
