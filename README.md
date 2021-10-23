@@ -7,21 +7,22 @@ Watcher ignores any pattern in the **.gitignore** and the **.watcherignore** fil
 
 ## Usage
 
-`-d path` the folder to watch (default current folder)
-`-r prog` the program to run (default empty)
+`-dir path` the folder to watch (default current folder)
+`-run prog` the program to run (default empty)
+`-help` to view the command usage 
 
 **Examples**
 
 Watch the current folder (default) and run the program in ./cmd/server
 
 ```sh
-watcher -r ./cmd/server/ 
+watcher -run ./cmd/server/ 
 ```
 
 Watch folder ./pkg and run the program in ./cmd/server
 
 ```sh
-watcher -r ./cmd/server -d ./pkg
+watcher -run ./cmd/server -dir ./pkg
 ```
 
 Example of a *.watcherignore* file
