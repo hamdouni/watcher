@@ -8,9 +8,10 @@ import (
 	_ "embed"
 	"flag"
 	"log"
-	"watcher/command"
-	"watcher/ignore"
-	"watcher/monitor"
+
+	"github.com/sipkg/watcher/command"
+	"github.com/sipkg/watcher/ignore"
+	"github.com/sipkg/watcher/monitor"
 )
 
 //go:embed VERSION

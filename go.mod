@@ -1,4 +1,4 @@
-module watcher
+module github.com/sipkg/watcher
 
 go 1.16
 
