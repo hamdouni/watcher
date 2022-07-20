@@ -23,11 +23,14 @@ func main() {
 
 	var srcpath = flag.String("dir", ".", "Directory to watch")
 	var program = flag.String("run", "", "Program to run")
+	var quiet = flag.Bool("quiet", false, "Log only errors")
 	var help = flag.Bool("help", false, "Command line usage")
 
 	flag.Parse()
 
-	log.Printf("Watcher version %v", version)
+	if !*quiet {
+		log.Printf("Watcher version %v", version)
+	}
 
 	if *help {
 		flag.Usage()
@@ -54,7 +57,9 @@ func main() {
 	for {
 		ev := <-ch
 		if !ignore.IgnoredFile(ev.Path()) {
-			log.Printf("Live reload on event %v\n", ev)
+			if !*quiet {
+				log.Printf("Live reload on event %v\n", ev)
+			}
 			err = command.Kill()
 			if err != nil {
 				log.Printf("%v\n", err)
