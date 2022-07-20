@@ -7,9 +7,9 @@ Watcher ignores any pattern in the **.gitignore** and the **.watcherignore** fil
 
 ## Usage
 
-`-dir path` the folder to watch (default current folder)
-`-run prog` the program to run (default empty)
-`-help` to view the command usage 
+* `-dir path` the folder to watch (default current folder)
+* `-run prog` the program to run (default empty)
+* `-help` to view the command usage 
 
 **Examples**
 
