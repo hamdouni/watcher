@@ -12,6 +12,18 @@ import (
 
 var cmd *exec.Cmd
 
+// Test invoke the go test chain.
+func Test(srcpath string) error {
+	c := exec.Command("go", "test", srcpath)
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
+	err := c.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Launch invoke the go compiler to build the program in the tmp folder and launch it.
 func Launch(srcpath string) error {
 

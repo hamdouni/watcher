@@ -23,6 +23,7 @@ func main() {
 
 	var srcpath = flag.String("dir", ".", "Directory to watch")
 	var program = flag.String("run", "", "Program to run")
+	var test = flag.Bool("test", false, "Run the tests")
 	var quiet = flag.Bool("quiet", false, "Log only errors")
 	var help = flag.Bool("help", false, "Command line usage")
 
@@ -49,9 +50,13 @@ func main() {
 	}
 	defer monitor.Stop(ch)
 
-	err = command.Launch(*program)
+	run := command.Launch
+	if *test {
+		run = command.Test
+	}
+	err = run(*program)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("%v\n", err)
 	}
 
 	for {
@@ -60,11 +65,13 @@ func main() {
 			if !*quiet {
 				log.Printf("Live reload on event %v\n", ev)
 			}
-			err = command.Kill()
-			if err != nil {
-				log.Printf("%v\n", err)
+			if !*test {
+				err = command.Kill()
+				if err != nil {
+					log.Printf("%v\n", err)
+				}
 			}
-			err = command.Launch(*program)
+			err = run(*program)
 			if err != nil {
 				log.Printf("%v\n", err)
 			}

@@ -1,7 +1,7 @@
-Watcher is a **Go live reload** program for **Linux**.
+Watcher is a **Go live reload or retest** program for **Linux**.
 
-Watcher monitors the files in a directory and all its subfolders. 
-If a write or delete event occurs on any file, the Go program is reloaded.
+Watcher monitors the files in a directory and all its subfolders. If a write or
+delete event occurs on any file, the Go program or the tests are reloaded.
 
 Watcher ignores any pattern in the **.gitignore** and the **.watcherignore** files.
 
@@ -9,6 +9,7 @@ Watcher ignores any pattern in the **.gitignore** and the **.watcherignore** fil
 
 * `-dir path` the folder to watch (default current folder)
 * `-run prog` the program to run (default empty)
+* `-test` launch tests instead of the program
 * `-help` to view the command usage 
 
 **Examples**
@@ -23,6 +24,18 @@ Watch folder ./pkg and run the program in ./cmd/server
 
 ```sh
 watcher -run ./cmd/server -dir ./pkg
+```
+
+Watch current folder and retest 
+
+```sh 
+watcher -test
+```
+
+Watch current folder and retest all subfolders
+
+```sh 
+watcher -test -run ./...
 ```
 
 Example of a *.watcherignore* file
