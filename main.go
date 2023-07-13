@@ -43,7 +43,7 @@ func main() {
 	// Otherwise use an empty pattern.
 	err = ignore.Read(".gitignore", ".watcherignore")
 	if err != nil {
-		log.Printf("got error reading ignore files: %s", err)
+		log.Printf("got error reading ignore files: %s\nusing empty pattern", err)
 		ignore.New([]string{""})
 	}
 
