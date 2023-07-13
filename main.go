@@ -39,10 +39,12 @@ func main() {
 		return
 	}
 
-	// Use .gitignore if it exists or use an empty pattern
-	err = ignore.InitFromFile(".gitignore", ".watcherignore")
+	// Use .gitignore or .watcherignore if they exist.
+	// Otherwise use an empty pattern.
+	err = ignore.Read(".gitignore", ".watcherignore")
 	if err != nil {
-		ignore.Init([]string{""})
+		log.Printf("got error reading ignore files: %s", err)
+		ignore.New([]string{""})
 	}
 
 	ch, err := monitor.Watch(*srcpath)
@@ -62,7 +64,7 @@ func main() {
 
 	for {
 		ev := <-ch
-		if !ignore.IgnoredFile(ev.Path()) {
+		if !ignore.Ignored(ev.Path()) {
 			if !*quiet {
 				log.Printf("Live reload on event %v\n", ev)
 			}
