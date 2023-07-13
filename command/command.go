@@ -1,5 +1,5 @@
 /*
-	Build, launch or stop a go program.
+Build, launch or stop a go program.
 */
 package command
 
@@ -8,12 +8,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 var cmd *exec.Cmd
 
 // Test invoke the go test chain.
-func Test(srcpath string) error {
+func Test(srcpath string, args string) error {
 	c := exec.Command("go", "test", srcpath)
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr
@@ -25,7 +26,7 @@ func Test(srcpath string) error {
 }
 
 // Launch invoke the go compiler to build the program in the tmp folder and launch it.
-func Launch(srcpath string) error {
+func Launch(srcpath string, arguments string) error {
 
 	// we build the program in a temp dir
 	dir, err := ioutil.TempDir("", "watcherdir")
@@ -42,8 +43,12 @@ func Launch(srcpath string) error {
 		return err
 	}
 
+	var args []string
+	if len(arguments) > 0 {
+		args = strings.Split(arguments, " ")
+	}
 	// now we launch the program
-	cmd = exec.Command(tmpbin)
+	cmd = exec.Command(tmpbin, args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Start()

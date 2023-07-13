@@ -1,6 +1,6 @@
 /*
-	Watcher is a Go live reload program for Linux.
-	It monitors the actual directory and all its subfolders for write or delete events on any file except those matching any pattern in .gitignore file.
+Watcher is a Go live reload program for Linux.
+It monitors the actual directory and all its subfolders for write or delete events on any file except those matching any pattern in .gitignore file.
 */
 package main
 
@@ -26,6 +26,7 @@ func main() {
 	var test = flag.Bool("test", false, "Run the tests")
 	var quiet = flag.Bool("quiet", false, "Log only errors")
 	var help = flag.Bool("help", false, "Command line usage")
+	var args = flag.String("args", "", "Args to pass surrounded with quotes")
 
 	flag.Parse()
 
@@ -54,7 +55,7 @@ func main() {
 	if *test {
 		run = command.Test
 	}
-	err = run(*program)
+	err = run(*program, *args)
 	if err != nil {
 		log.Printf("%v\n", err)
 	}
@@ -71,7 +72,7 @@ func main() {
 					log.Printf("%v\n", err)
 				}
 			}
-			err = run(*program)
+			err = run(*program, *args)
 			if err != nil {
 				log.Printf("%v\n", err)
 			}
