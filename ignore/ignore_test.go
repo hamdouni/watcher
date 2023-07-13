@@ -14,34 +14,34 @@ func TestIgnore(t *testing.T) {
 		ignored bool
 	}{
 		{
-			desc:    "Passant",
+			desc:    "Unique pattern and matching file in root",
 			patt:    []string{"*.go"},
 			file:    "main.go",
 			ignored: true,
 		},
 		{
-			desc:    "Passant",
+			desc:    "Unique pattern and not matching file in root",
 			patt:    []string{"*.go"},
 			file:    "main.c",
 			ignored: false,
 		},
 		{
-			desc:    "Passant",
+			desc:    "Unique pattern and matching file deep in path",
 			patt:    []string{"*.go"},
 			file:    "/home/test/main.go",
 			ignored: true,
 		},
 		{
-			desc:    "Passant",
+			desc:    "Pattern with path and file in root",
 			patt:    []string{"test/*.go"},
 			file:    "main.c",
 			ignored: false,
 		},
 		{
-			desc:    "Passant",
+			desc:    "Precise pattern file and matching file deep in path",
 			patt:    []string{"main.c"},
 			file:    "/home/test/pass/main.c",
-			ignored: false,
+			ignored: true,
 		},
 	}
 	for _, tC := range testCases {
