@@ -38,8 +38,6 @@ func Read(paths ...string) error {
 		}
 		pattern = append(pattern, string(file))
 	}
-
 	New(pattern)
-
 	return nil
 }
