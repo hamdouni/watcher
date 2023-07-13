@@ -19,15 +19,14 @@ var version string
 
 func main() {
 
-	var err error
-
-	var srcpath = flag.String("dir", ".", "Directory to watch")
-	var program = flag.String("run", "", "Program to run")
-	var test = flag.Bool("test", false, "Run the tests")
-	var quiet = flag.Bool("quiet", false, "Log only errors")
-	var help = flag.Bool("help", false, "Command line usage")
-	var args = flag.String("args", "", "Args to pass surrounded with quotes")
-
+	var (
+		srcpath = flag.String("dir", ".", "Directory to watch")
+		program = flag.String("run", "", "Program to run")
+		test    = flag.Bool("test", false, "Run tests")
+		quiet   = flag.Bool("quiet", false, "Log only errors")
+		help    = flag.Bool("help", false, "Command line usage")
+		args    = flag.String("args", "", "Args to pass surrounded with quotes")
+	)
 	flag.Parse()
 
 	if !*quiet {
@@ -41,8 +40,7 @@ func main() {
 
 	// Use .gitignore or .watcherignore if they exist.
 	// Otherwise use an empty pattern.
-	err = ignore.Read(".gitignore", ".watcherignore")
-	if err != nil {
+	if err := ignore.Read(".gitignore", ".watcherignore"); err != nil {
 		log.Printf("got error reading ignore files: %s\nusing empty pattern", err)
 		ignore.New([]string{""})
 	}
@@ -57,8 +55,7 @@ func main() {
 	if *test {
 		run = command.Test
 	}
-	err = run(*program, *args)
-	if err != nil {
+	if err := run(*program, *args); err != nil {
 		log.Printf("%v\n", err)
 	}
 
@@ -74,8 +71,7 @@ func main() {
 					log.Printf("%v\n", err)
 				}
 			}
-			err = run(*program, *args)
-			if err != nil {
+			if err := run(*program, *args); err != nil {
 				log.Printf("%v\n", err)
 			}
 		}
