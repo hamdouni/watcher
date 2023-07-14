@@ -10,6 +10,7 @@ After initializing the pattern, use Ignored to see if a file is ignored or not.
 package ignore
 
 import (
+	"bufio"
 	"os"
 
 	gitignore "github.com/sabhiram/go-gitignore"
@@ -31,13 +32,18 @@ func New(pattern []string) {
 func Read(paths ...string) error {
 	var pattern []string
 	for _, path := range paths {
-		file, err := os.ReadFile(path)
+		file, err := os.Open(path)
 		if err != nil && os.IsNotExist(err) {
 			continue
 		} else if err != nil {
 			return err
 		}
-		pattern = append(pattern, string(file))
+		defer file.Close()
+		// we read the files line by line
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			pattern = append(pattern, scanner.Text())
+		}
 	}
 	New(pattern)
 	return nil
