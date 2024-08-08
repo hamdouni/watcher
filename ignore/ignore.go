@@ -18,12 +18,12 @@ import (
 
 var ignoreObject *gitignore.GitIgnore
 
-// Ignored return true it the file is ignored
+// Ignored returns true it the file is ignored
 func Ignored(path string) bool {
 	return ignoreObject.MatchesPath(path)
 }
 
-// New initialize the ignore pattern
+// New initializes the ignore pattern
 func New(pattern []string) {
 	ignoreObject = gitignore.CompileIgnoreLines(pattern...)
 }

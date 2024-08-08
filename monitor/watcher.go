@@ -1,5 +1,5 @@
 /*
-	Use package rjeczalik/notify to monitor the Linux file system with inotify specific events.
+Use package rjeczalik/notify to monitor the Linux file system with inotify specific events.
 */
 package monitor
 
@@ -18,5 +18,5 @@ func Watch(srcpath string) (chan notify.EventInfo, error) {
 
 // Stop the channel
 func Stop(c chan notify.EventInfo) {
-	defer notify.Stop(c)
+	notify.Stop(c)
 }

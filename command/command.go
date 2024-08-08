@@ -2,7 +2,7 @@
 package command
 
 import (
-	"io/ioutil"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -11,31 +11,30 @@ import (
 
 var cmd *exec.Cmd
 
-// RunGo executes go command
-func RunGo(args ...string) error {
+// run executes go command
+func run(args ...string) error {
 	c := exec.Command("go", args...)
 	c.Stdout = os.Stdout
 	c.Stderr = os.Stderr
 	return c.Run()
 }
 
-// Test invoke the go test chain.
+// Test invokes the go test chain.
 func Test(srcpath string, args string) error {
-	return RunGo("test", srcpath)
+	return run("test", srcpath)
 }
 
-// Launch invoke the go compiler to build the program in the tmp folder and launch it.
+// Launch invokes the go compiler to build the program in the tmp folder and launch it.
 func Launch(srcpath string, arguments string) error {
-
 	// we build the program in a temp dir
-	dir, err := ioutil.TempDir("", "watcherdir")
+	dir, err := os.MkdirTemp("", "watcherdir")
 	if err != nil {
-		return err
+		return fmt.Errorf("creates temp dir: %w", err)
 	}
 	defer os.RemoveAll(dir)
 	tmpbin := filepath.Join(dir, "out.bin")
-	if err := RunGo("build", "-o", tmpbin, srcpath); err != nil {
-		return err
+	if err := run("build", "-o", tmpbin, srcpath); err != nil {
+		return fmt.Errorf("builds go program: %w", err)
 	}
 
 	var args []string
@@ -49,9 +48,10 @@ func Launch(srcpath string, arguments string) error {
 	return cmd.Start()
 }
 
+// Kill kills the previously executed command
 func Kill() error {
 	if err := cmd.Process.Kill(); err != nil {
-		return err
+		return fmt.Errorf("killing command: %w", err)
 	}
 	return cmd.Wait()
 }
