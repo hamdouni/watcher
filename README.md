@@ -17,6 +17,7 @@ Arguments must be surrounded with quotes.
 * `-args "arguments..."` pass arguments to the program (default empty). This
   has no effect with -test.
 * `-test` launch tests instead of the program
+* `-verbosetest` launch tests with verbosity
 * `-help` view the command usage 
 
 **Examples**
@@ -38,6 +39,11 @@ Watch current folder and retest
 
 ```sh 
 watcher -test
+```
+Same thing but test with verbosity
+
+```sh
+watcher -verbosetest
 ```
 
 Watch current folder and retest all subfolders
