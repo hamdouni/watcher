@@ -72,7 +72,7 @@ func main() {
 			if !*quiet {
 				log.Printf("Live reload on event %v\n", ev)
 			}
-			if !*test {
+			if !*test && !*verbosetest {
 				err = command.Kill()
 				if err != nil {
 					log.Printf("%v\n", err)
