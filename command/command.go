@@ -24,6 +24,11 @@ func Test(srcpath string, args string) error {
 	return run("test", srcpath)
 }
 
+// VerboseTest invokes the go test chain with verbosity.
+func VerboseTest(srcpath string, args string) error {
+	return run("test", "-v", srcpath)
+}
+
 // Launch invokes the go compiler to build the program in the tmp folder and launch it.
 func Launch(srcpath string, arguments string) error {
 	// we build the program in a temp dir

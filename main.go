@@ -20,12 +20,13 @@ var version string
 
 func main() {
 	var (
-		srcpath = flag.String("dir", ".", "Directory to watch")
-		program = flag.String("run", "", "Program to run")
-		test    = flag.Bool("test", false, "Run tests")
-		quiet   = flag.Bool("quiet", false, "Log only errors")
-		help    = flag.Bool("help", false, "Command line usage")
-		args    = flag.String("args", "", "Args to pass surrounded with quotes")
+		srcpath     = flag.String("dir", ".", "Directory to watch")
+		program     = flag.String("run", "", "Program to run")
+		test        = flag.Bool("test", false, "Run tests")
+		verbosetest = flag.Bool("verbosetest", false, "Run tests with verbosity")
+		quiet       = flag.Bool("quiet", false, "Log only errors")
+		help        = flag.Bool("help", false, "Command line usage")
+		args        = flag.String("args", "", "Args to pass surrounded with quotes")
 	)
 	flag.Parse()
 
@@ -56,6 +57,8 @@ func main() {
 	launch := command.Launch
 	if *test {
 		launch = command.Test
+	} else if *verbosetest {
+		launch = command.VerboseTest
 	}
 	err = launch(*program, *args)
 	if err != nil {
